@@ -1,0 +1,77 @@
+
+using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Configurations;
+using DotNet.Testcontainers.Containers;
+
+namespace Ldap.Test
+{
+	public class LdapFixture : IAsyncLifetime
+	{
+
+		#region Fields
+
+		private IContainer _ldapContainer;
+
+		#endregion Fields
+
+
+		#region Properties
+
+		public ushort LdapPort { get; private set; }
+		public ushort LdapsPort { get; private set; }
+
+		#endregion Properties
+
+
+		#region Public Methods
+
+		public async Task DisposeAsync()
+		{
+			if (_ldapContainer == null)
+			{
+				return;
+			}
+
+			await _ldapContainer.DisposeAsync();
+		}
+
+		public async Task InitializeAsync()
+		{
+			string certsPathWindows = Path.GetFullPath("./certs"); // chemin absolu Windows
+			string certsPathUnix = certsPathWindows.Replace("\\", "/"); // chemin en slash UNIX
+
+			_ldapContainer = new ContainerBuilder()
+				.WithImage("bitnami/openldap:latest")
+
+				.WithPortBinding(1389, true)
+				.WithPortBinding(1636, true)
+
+				// Variables d'environnement
+				.WithEnvironment("LDAP_ADMIN_USERNAME", "admin")
+				.WithEnvironment("LDAP_ADMIN_PASSWORD", "adminpassword")
+				.WithEnvironment("LDAP_USERS", "smaussion,user01,user02")
+				.WithEnvironment("LDAP_PASSWORDS", "P@ssw0rd,password1,password2")
+				.WithEnvironment("LDAP_ENABLE_TLS", "yes")
+				.WithEnvironment("LDAP_TLS_CERT_FILE", "/opt/bitnami/openldap/certs/openldap.crt")
+				.WithEnvironment("LDAP_TLS_KEY_FILE", "/opt/bitnami/openldap/certs/openldap.key")
+				.WithEnvironment("LDAP_TLS_CA_FILE", "/opt/bitnami/openldap/certs/openldapCA.crt")
+				.WithEnvironment("LDAP_TLS_VERIFY_CLIENT", "never")
+
+				// Bind mount du dossier local ./certs en lecture seule dans le container
+				.WithBindMount(certsPathUnix, "/opt/bitnami/openldap/certs", accessMode: AccessMode.ReadOnly)
+
+				// Attente que le serveur soit prêt (log ou port ouvert)
+				.WithWaitStrategy(Wait.ForUnixContainer().UntilMessageIsLogged("slapd starting"))
+				.WithCleanUp(true)
+				.Build();
+
+			await _ldapContainer.StartAsync();
+
+			// Récupérer les ports mappés
+			LdapPort = _ldapContainer.GetMappedPublicPort(1389);
+			LdapsPort = _ldapContainer.GetMappedPublicPort(1636);
+		}
+
+		#endregion Public Methods
+	}
+}
