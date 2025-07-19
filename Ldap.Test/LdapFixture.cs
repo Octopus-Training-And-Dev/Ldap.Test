@@ -1,4 +1,3 @@
-
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
@@ -7,13 +6,11 @@ namespace Ldap.Test
 {
 	public class LdapFixture : IAsyncLifetime
 	{
-
 		#region Fields
 
 		private IContainer _ldapContainer;
 
 		#endregion Fields
-
 
 		#region Properties
 
@@ -21,7 +18,6 @@ namespace Ldap.Test
 		public ushort LdapsPort { get; private set; }
 
 		#endregion Properties
-
 
 		#region Public Methods
 

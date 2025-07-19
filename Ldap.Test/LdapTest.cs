@@ -25,7 +25,7 @@ namespace Ldap.Test
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
-		public async Task Ldap_Anonymous(bool secure)
+		public void Ldap_Anonymous(bool secure)
 		{
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
 			LdapDirectoryIdentifier identifier = new("localhost", port);
@@ -47,7 +47,7 @@ namespace Ldap.Test
 		[InlineData(true, "smaussion", "P@ssw0rd")]
 		[InlineData(true, "user01", "password1")]
 		[InlineData(true, "user02", "password2")]
-		public async Task Ldap_SearchForUsers_ShouldReturnSmaussionAsync(bool secure, string username, string password)
+		public void Ldap_SearchForUsers_ShouldReturnSmaussion(bool secure, string username, string password)
 		{
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
 			LdapDirectoryIdentifier identifier = new("localhost", port);
