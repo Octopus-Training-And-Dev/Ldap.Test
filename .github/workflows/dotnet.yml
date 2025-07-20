@@ -64,6 +64,13 @@ jobs:
           name: test-results
           path: TestResults/results.trx
 
+      - name: Upload LDAP container logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+           name: ldap-container-logs
+           path: ldap-container.log
+      
       - name: Publish test results to GitHub
         if: always()
         uses: dorny/test-reporter@v1

@@ -52,13 +52,17 @@ namespace Ldap.Test
 				return;
 			}
 
-			// Avant d’arrêter le container, récupère et affiche les logs
-			var logs = await _ldapContainer.GetLogsAsync();
-			Console.WriteLine("===== Logs du container LDAP =====");
-			Console.WriteLine(logs);
+			// Récupérer les logs du container de façon synchrone
+			(string Stdout, string Stderr) logs = await _ldapContainer.GetLogsAsync();
+			string stdout = logs.Stdout;
+			string stderr = logs.Stderr;
 
-			await _ldapContainer.StopAsync();
-			await _ldapContainer.DisposeAsync();
+			// Par exemple, tu peux écrire la sortie standard dans un fichier
+			File.WriteAllText("ldap-container-stdout.log", stdout);
+
+			// Et la sortie erreur dans un autre fichier
+			File.WriteAllText("ldap-container-stderr.log", stderr);
+
 
 			_ldapContainer.DisposeAsync().GetAwaiter().GetResult();
 		}
