@@ -1,5 +1,3 @@
-using Docker.DotNet.Models;
-
 using FluentAssertions;
 
 using System.DirectoryServices.Protocols;
@@ -42,7 +40,7 @@ namespace Ldap.Test
 
 		[Theory]
 		[InlineData(false)]
-		//[InlineData(true)]
+		[InlineData(true)]
 		public void Ldap_Anonymous(bool secure)
 		{
 			//ldapFixture.TestcontainersStates.Should().Be(DotNet.Testcontainers.Containers.TestcontainersStates.Running, "the LDAP container should be running");
@@ -70,13 +68,13 @@ namespace Ldap.Test
 			connection.Bind();
 		}
 
-		//[Theory]
-		//[InlineData(false, "smaussion", "P@ssw0rd")]
-		//[InlineData(false, "user01", "password1")]
-		//[InlineData(false, "user02", "password2")]
-		//[InlineData(true, "smaussion", "P@ssw0rd")]
-		//[InlineData(true, "user01", "password1")]
-		//[InlineData(true, "user02", "password2")]
+		[Theory]
+		[InlineData(false, "smaussion", "P@ssw0rd")]
+		[InlineData(false, "user01", "password1")]
+		[InlineData(false, "user02", "password2")]
+		[InlineData(true, "smaussion", "P@ssw0rd")]
+		[InlineData(true, "user01", "password1")]
+		[InlineData(true, "user02", "password2")]
 		public void Ldap_SearchForUsers_ShouldReturnSmaussion(bool secure, string username, string password)
 		{
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;

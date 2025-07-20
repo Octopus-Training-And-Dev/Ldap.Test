@@ -71,5 +71,5 @@ jobs:
           name: Unit Tests
           path: TestResults/results.trx
           reporter: dotnet-trx
-          fail-on-error: false
+          fail-on-error: true
       
