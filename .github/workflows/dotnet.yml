@@ -20,6 +20,9 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-          
+      - name: Check Docker version
+        run: docker --version
+      - name: Start Docker
+        run: sudo service docker start          
       - name: Run tests
         run: dotnet test --configuration Release
