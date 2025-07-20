@@ -29,21 +29,20 @@ namespace Ldap.Test
 		[InlineData(true)]
 		public void Ldap_Anonymous(bool secure)
 		{
-			ldapFixture.TestcontainersStates.Should().Be(DotNet.Testcontainers.Containers.TestcontainersStates.Running, "the LDAP container should be running");
-			ldapFixture.Hostname.Should().Be("Localhost", "the LDAP container should be running on localhost");
+			//ldapFixture.TestcontainersStates.Should().Be(DotNet.Testcontainers.Containers.TestcontainersStates.Running, "the LDAP container should be running");
+			//ldapFixture.Hostname.Should().Be("Localhost", "the LDAP container should be running on localhost");
 
-			//int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
-			//Console.WriteLine($"Connecting to {ldapFixture.Hostname}:{port}, SSL={secure}");
-			//LdapDirectoryIdentifier identifier = new(ldapFixture.Hostname, port);
-			//using LdapConnection connection = new(identifier)
-			//{
-			//	AuthType = AuthType.Anonymous
-			//};
-			//connection.SessionOptions.ProtocolVersion = 3;
-			//connection.SessionOptions.SecureSocketLayer = secure;
-			//connection.SessionOptions.VerifyServerCertificate += (conn, cert) => secure;
+			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
+			LdapDirectoryIdentifier identifier = new("127.0.0.1", port);
+			using LdapConnection connection = new(identifier)
+			{
+				AuthType = AuthType.Anonymous
+			};
+			connection.SessionOptions.ProtocolVersion = 3;
+			connection.SessionOptions.SecureSocketLayer = secure;
+			connection.SessionOptions.VerifyServerCertificate += (conn, cert) => secure;
 
-			//connection.Bind();
+			connection.Bind();
 		}
 
 		[Theory]
@@ -56,7 +55,6 @@ namespace Ldap.Test
 		public void Ldap_SearchForUsers_ShouldReturnSmaussion(bool secure, string username, string password)
 		{
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
-			Console.WriteLine($"Connecting to {ldapFixture.Hostname}:{port}, SSL={secure}");
 			LdapDirectoryIdentifier identifier = new(ldapFixture.Hostname, port);
 			string login = $"cn={username},ou=users,dc=example,dc=org";
 
