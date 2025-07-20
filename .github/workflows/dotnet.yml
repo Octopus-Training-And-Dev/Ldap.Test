@@ -7,6 +7,11 @@ on:
     branches: [ "main" ]
   workflow_dispatch:   # Déclenchement manuel
 
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
 jobs:
   test:
     name: Test
