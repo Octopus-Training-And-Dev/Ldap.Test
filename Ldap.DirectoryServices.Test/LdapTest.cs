@@ -1,7 +1,5 @@
 using FluentAssertions;
 
-using Ldap.Test;
-
 using System.DirectoryServices.Protocols;
 using System.Net;
 using System.Net.Sockets;
