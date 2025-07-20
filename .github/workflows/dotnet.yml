@@ -29,7 +29,10 @@ jobs:
       
       - name: Copy certs to build folder
         run: cp -r ./Ldap.Test/Certs/* ./Ldap.Test/bin/Release/net8.0/certs/   
-      - name: Install OpenLDAP client libraries
-        run: sudo apt-get update && sudo apt-get install -y libldap-2.5-0        
+      - name: Install LDAP libs
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libldap-2.4-2 libldap2-dev
+     
       - name: Run tests
         run: dotnet test --configuration Release
