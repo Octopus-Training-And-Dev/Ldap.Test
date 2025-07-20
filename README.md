@@ -1,5 +1,18 @@
 # README
 
+## Qu'est-ce que LDAP ?
+
+LDAP (Lightweight Directory Access Protocol) est un protocole standard utilisé pour accéder à des services d'annuaire sur un réseau. Il permet de rechercher, modifier et authentifier des objets dans un annuaire, comme des utilisateurs, des groupes ou des ressources.
+
+### Fonctionnement :
+- **Bind LDAP** : Une connexion au serveur LDAP pour s'authentifier.
+- **Requêtes LDAP** : Utilisées pour interroger l'annuaire et récupérer des informations comme les noms d'utilisateur, les groupes, les UID, etc.
+- **Sécurité** : LDAP peut être sécurisé via TLS ou des mécanismes comme LDAP Signing.
+
+Pour en savoir plus, consultez [la documentation sur LDAP](https://learn.microsoft.com/en-us/azure/azure-netapp-files/lightweight-directory-access-protocol).
+
+---
+
 ## Installation d'OpenSSL via Chocolatey
 
 Pour installer OpenSSL sur Windows en utilisant Chocolatey, suivez les étapes ci-dessous :
@@ -18,20 +31,32 @@ openssl version
 
 Pour plus d'informations, consultez la documentation officielle de Chocolatey : [OpenSSL sur Chocolatey](https://community.chocolatey.org/packages/openssl).
 
----
+### Lancement script pour generer les Certificat autosignés
+Pour générer des certificats autosignés pour les tests LDAP, vous pouvez utiliser le script PowerShell suivant :
+Vous trouvez le script dans le fichier `GenerateCertificates.ps1`. Ce script crée un dossier `certs`, génère une clé privée RSA, une requête de signature de certificat (CSR) et un certificat auto-signé. Il copie également le certificat dans le même dossier sous le nom `openldapCA.crt`.
 
-## Qu'est-ce que LDAP ?
+```powershell
+# Crée le dossier certs s'il n'existe pas
+$certsPath = ".\certs"
+if (-Not (Test-Path $certsPath)) {
+    New-Item -ItemType Directory -Path $certsPath | Out-Null
+}
 
-LDAP (Lightweight Directory Access Protocol) est un protocole standard utilisé pour accéder à des services d'annuaire sur un réseau. Il permet de rechercher, modifier et authentifier des objets dans un annuaire, comme des utilisateurs, des groupes ou des ressources.
+# Génère la clé privée RSA 2048 bits
+openssl genrsa -out "$certsPath\openldap.key" 2048
 
-### Fonctionnement :
-- **Bind LDAP** : Une connexion au serveur LDAP pour s'authentifier.
-- **Requêtes LDAP** : Utilisées pour interroger l'annuaire et récupérer des informations comme les noms d'utilisateur, les groupes, les UID, etc.
-- **Sécurité** : LDAP peut être sécurisé via TLS ou des mécanismes comme LDAP Signing.
+# Génère la requête CSR avec le sujet CN=ldap.entreprisegroup.intra
+openssl req -new -key "$certsPath\openldap.key" -out "$certsPath\openldap.csr" -subj "/CN=ldap.entreprisegroup.intra"
 
-Pour en savoir plus, consultez [la documentation sur LDAP](https://learn.microsoft.com/en-us/azure/azure-netapp-files/lightweight-directory-access-protocol).
+# Génère le certificat auto-signé (valide 365 jours)
+openssl x509 -req -in "$certsPath\openldap.csr" -signkey "$certsPath\openldap.key" -out "$certsPath\openldap.crt" -days 365
 
----
+# Copie le certificat comme CA (pour Bitnami OpenLDAP)
+Copy-Item "$certsPath\openldap.crt" "$certsPath\openldapCA.crt"
+
+Write-Host "Certificats générés dans le dossier $certsPath"
+```
+# LDAP Tests avec OpenLDAP
 
 ## Description des tests
 
