@@ -27,6 +27,19 @@ namespace Ldap.Test
 		public ushort LdapPort { get; private set; }
 		public ushort LdapsPort { get; private set; }
 
+		public TestcontainersStates TestcontainersStates
+		{
+			get
+			{
+				if (_ldapContainer == null)
+				{
+					return TestcontainersStates.Exited;
+				}
+
+				return _ldapContainer.State;
+			}
+		}
+
 		#endregion Properties
 
 
@@ -41,6 +54,8 @@ namespace Ldap.Test
 
 			_ldapContainer.DisposeAsync().GetAwaiter().GetResult();
 		}
+
+
 
 		public async Task InitializeAsync()
 		{
@@ -76,6 +91,8 @@ namespace Ldap.Test
 
 			Console.WriteLine($"Mapped ports => LDAP: {LdapPort}, LDAPS: {LdapsPort}");
 			Console.WriteLine($"Hostname => {Hostname}");
+
+			_ldapContainer.State
 
 		}
 
