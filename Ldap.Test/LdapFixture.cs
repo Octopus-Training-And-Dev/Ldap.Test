@@ -4,7 +4,7 @@ using DotNet.Testcontainers.Containers;
 
 namespace Ldap.Test
 {
-	public class LdapFixture : IDisposable
+	public class LdapFixture : IDisposable, IAsyncLifetime
 	{
 
 		#region Fields
@@ -63,7 +63,19 @@ namespace Ldap.Test
 			_ldapContainer.DisposeAsync().GetAwaiter().GetResult();
 		}
 
+		public async Task DisposeAsync()
+		{
+			if (_ldapContainer != null)
+			{
+				// Avant d’arrêter le container, récupère et affiche les logs
+				(string Stdout, string Stderr) logs = await _ldapContainer.GetLogsAsync();
+				Console.WriteLine("===== Logs du container LDAP =====");
+				Console.WriteLine(logs);
 
+				await _ldapContainer.StopAsync();
+				await _ldapContainer.DisposeAsync();
+			}
+		}
 
 		public async Task InitializeAsync()
 		{

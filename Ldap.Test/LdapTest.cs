@@ -1,3 +1,5 @@
+using Docker.DotNet.Models;
+
 using FluentAssertions;
 
 using System.DirectoryServices.Protocols;
@@ -24,6 +26,19 @@ namespace Ldap.Test
 		#endregion Public Constructors
 
 		#region Public Methods
+
+		[Fact]
+		public void CheckLdapContainer()
+		{
+			int port = ldapFixture.LdapsPort;
+
+			using var tcpClient = new TcpClient();
+
+			var connectTask = tcpClient.ConnectAsync(ldapFixture.Hostname, port);
+			bool connected = connectTask.Wait(TimeSpan.FromSeconds(5)); // timeout 5s
+
+			(tcpClient.Connected && connected).Should().BeTrue($"Cannot connect to LDAP at {ldapFixture.Hostname}:{port}");
+		}
 
 		[Theory]
 		[InlineData(false)]
