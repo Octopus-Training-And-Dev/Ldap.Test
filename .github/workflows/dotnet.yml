@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  workflow_dispatch:
+  workflow_dispatch:   # Déclenchement manuel
 
 jobs:
   test:
@@ -20,31 +20,29 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Install native LDAP libraries
+      - name: Install native dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libldap-2.5-0 || sudo apt-get install -y libldap-2.4-2
-          sudo apt-get install -y libsasl2-2 libssl3 libkrb5-3 libldap-common
-          ldconfig -p | grep ldap
-          ls -l /usr/lib/x86_64-linux-gnu/libldap*
-      - name: Symlink libldap if version mismatch
-        run: |
-          if [ ! -f /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0 ] && [ -f /usr/lib/x86_64-linux-gnu/libldap-2.4.so.2 ]; then
-            sudo ln -s /usr/lib/x86_64-linux-gnu/libldap-2.4.so.2 /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0
-          fi
+          sudo apt-get install -y libldap-2.5-0 libsasl2-2 libssl3 libkrb5-3
 
+      - name: Check libldap presence
+        run: |
+          ldconfig -p | grep libldap
+          ls -l /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0 || echo "libldap-2.5.so.0 not found"
 
       - name: Check Docker version
         run: docker --version
-
+      
       - name: Start Docker
         run: sudo service docker start
 
       - name: Create certs folder for docker mount
         run: mkdir -p ./Ldap.Test/bin/Release/net8.0/certs
-
+      
       - name: Copy certs to build folder
         run: cp -r ./Ldap.Test/Certs/* ./Ldap.Test/bin/Release/net8.0/certs/
 
       - name: Run tests
+        env:
+          LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
         run: dotnet test --configuration Release
