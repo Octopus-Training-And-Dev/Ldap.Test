@@ -21,10 +21,10 @@ jobs:
           dotnet-version: 8.0.x
       
       - name: Restore dependencies
-        run: dotnet restore ./YourProjectFolder
+        run: dotnet restore ./Ldap.Test.sln
       
       - name: Build solution
-        run: dotnet build ./YourProjectFolder --no-restore --configuration Release
+        run: dotnet build ./Ldap.Test.sln --no-restore --configuration Release
 
   test:
     name: Test
@@ -40,35 +40,10 @@ jobs:
           dotnet-version: 8.0.x
       
       - name: Restore dependencies
-        run: dotnet restore ./YourTestProjectFolder
+        run: dotnet restore ./Ldap.test
       
       - name: Build tests
-        run: dotnet build ./YourTestProjectFolder --no-restore --configuration Release
+        run: dotnet build ./Ldap.test --no-restore --configuration Release
       
       - name: Run tests
-        run: dotnet test ./YourTestProjectFolder --no-build --verbosity normal --configuration Release
-
-  integration-test:
-    name: Integration Test
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 8.0.x
-      
-      - name: Check Docker version
-        run: docker --version
-      
-      - name: Restore dependencies for Integration Tests
-        run: dotnet restore ./IntegrationTests
-      
-      - name: Build Integration Tests
-        run: dotnet build ./IntegrationTests --no-restore --configuration Release
-      
-      - name: Run Integration Tests
-        run: dotnet test ./IntegrationTests --no-build --verbosity normal --configuration Release
+        run: dotnet test ./Ldap.test --no-build --verbosity normal --configuration Release
