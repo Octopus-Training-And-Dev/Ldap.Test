@@ -30,11 +30,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libldap-common libldap2 libsasl2-2 libssl3 libkrb5-3
 
-      - name: Check libldap files and symlinks
+      - name: Create libldap symlink if missing
         run: |
-          ls -l /usr/lib/x86_64-linux-gnu/libldap*
-          ldd $(which dotnet) | grep ldap
-
+          if [ ! -f /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0 ] && [ -f /usr/lib/x86_64-linux-gnu/libldap.so.2 ]; then
+            sudo ln -s /usr/lib/x86_64-linux-gnu/libldap.so.2 /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0
+          fi
+          
       - name: Check Docker version
         run: docker --version
       
