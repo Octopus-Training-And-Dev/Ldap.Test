@@ -67,28 +67,25 @@ jobs:
 
   test-ldap-Novell-Tests:
     name: Testldap-Novell-Tests
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, debian-latest]
+  
     steps:
       - uses: actions/checkout@v3
-
+  
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-          
-      - name: Check Docker version
-        run: docker --version
-      
-      - name: Start Docker
-        run: sudo service docker start
-
+  
       - name: Create certs folder for docker mount
         run: mkdir -p ./ldap.Novell.Tests/bin/Release/net8.0/certs
-      
+  
       - name: Copy certs to build folder
         run: cp -r ./ldap.Novell.Tests/Certs/* ./ldap.Novell.Tests/bin/Release/net8.0/certs/
-
+  
       - name: Run tests
         continue-on-error: true
         env:
@@ -96,7 +93,7 @@ jobs:
         run: |
           mkdir -p TestResults
           dotnet test ./ldap.Novell.Tests/ldap.Novell.Tests.csproj --configuration Release --logger "trx;LogFileName=results.trx" --results-directory TestResults
-
+  
       - name: Publish test results to GitHub
         if: always()
         uses: dorny/test-reporter@v1
@@ -104,7 +101,8 @@ jobs:
           name: Novell test results
           path: TestResults/results.trx
           reporter: dotnet-trx
-          fail-on-error: false    
+          fail-on-error: false
+  
       
 
       
