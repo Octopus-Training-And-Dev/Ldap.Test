@@ -1,10 +1,11 @@
 name: Build Docker on Windows
 
 on:
-  workflow_dispatch:   # déclenchement manuel
+  workflow_dispatch:
   push:
     branches:
-      - 'feature/**'  # push sur branches feature
+      - 'feature/**'
+      - 'main'
 
 jobs:
   build:
@@ -26,9 +27,7 @@ jobs:
 
     - name: Install Docker Desktop
       shell: powershell
-      run: |
-        choco install docker-desktop -y
-        refreshenv
+      run: choco install docker-desktop -y
 
     - name: Start Docker Desktop
       shell: powershell
@@ -43,4 +42,3 @@ jobs:
     - name: Build Docker image
       shell: pwsh
       run: docker build -t monimage:latest .
-
