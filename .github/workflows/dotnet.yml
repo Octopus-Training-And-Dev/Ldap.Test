@@ -23,6 +23,11 @@ jobs:
       - name: Check Docker version
         run: docker --version
       - name: Start Docker
-        run: sudo service docker start          
+        run: sudo service docker start    
+      - name: Prepare certs folder
+        run: |
+          mkdir -p ./Ldap.Test/bin/Release/net8.0/certs
+          # copier les fichiers certs nécessaires, par ex:
+          cp ./certs/* ./Ldap.Test/bin/Release/net8.0/certs/ || echo "No certs to copy"        
       - name: Run tests
         run: dotnet test --configuration Release
