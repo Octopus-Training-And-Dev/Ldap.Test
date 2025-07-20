@@ -54,7 +54,7 @@ jobs:
           LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
         run: |
           mkdir -p TestResults
-          dotnet test .\Ldap.DirectoryServices.Test\Ldap.DirectoryServices.Test.csproj  --configuration Release --logger "trx;LogFileName=results.trx" --results-directory TestResults
+          dotnet test ./Ldap.DirectoryServices.Test/Ldap.DirectoryServices.Test.csproj  --configuration Release --logger "trx;LogFileName=results.trx" --results-directory TestResults
 
       - name: Publish test results to GitHub
         if: always()
@@ -102,7 +102,7 @@ jobs:
           LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
         run: |
           mkdir -p TestResults
-          dotnet test  .\ldap.Novell.Tests\ldap.Novell.Tests.csproj --configuration Release --logger "trx;LogFileName=results.trx" --results-directory TestResults
+          dotnet test ./ldap.Novell.Tests/ldap.Novell.Tests.csproj --configuration Release --logger "trx;LogFileName=results.trx" --results-directory TestResults
 
       - name: Publish test results to GitHub
         if: always()
