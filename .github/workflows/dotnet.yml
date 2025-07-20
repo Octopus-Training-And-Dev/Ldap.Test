@@ -8,23 +8,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
-    # Ajout du Docker daemon (nécessaire à Testcontainers)
-    steps:
-    - name: Set up Docker (start Docker daemon)
-      uses: docker/setup-buildx-action@v3
+    # Activer Docker in Docker en mode privilégié
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:8.0
+      options: --privileged
 
+    services:
+      docker:
+        image: docker:dind
+        ports:
+          - 2375:2375
+        options: >-
+          --dns 8.8.8.8
+          --name dind
+          --entrypoint dockerd-entrypoint.sh
+
+    steps:
     - uses: actions/checkout@v4
 
-    - name: Setup .NET 8
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-
-    - name: Ensure Docker is running
-      run: docker info
+    - name: Install Docker CLI inside container
+      run: |
+        apt-get update
+        apt-get install -y docker.io
+        dockerd & sleep 10
+        docker version
 
     - name: Restore dependencies
       run: dotnet restore
@@ -32,7 +42,7 @@ jobs:
     - name: Build project
       run: dotnet build --no-restore
 
-    - name: Run tests with Testcontainers
+    - name: Run tests (Testcontainers ready)
       run: |
         mkdir -p TestResults
         dotnet test --no-build --verbosity normal \
