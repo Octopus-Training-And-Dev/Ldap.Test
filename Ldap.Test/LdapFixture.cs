@@ -57,11 +57,9 @@ namespace Ldap.Test
 			string stdout = logs.Stdout;
 			string stderr = logs.Stderr;
 
-			// Par exemple, tu peux écrire la sortie standard dans un fichier
-			File.WriteAllText("ldap-container-stdout.log", stdout);
+			var logs = await _ldapContainer.GetLogsAsync();
+			await File.WriteAllTextAsync("ldap-container.log", logs.Stdout + "\n" + logs.Stderr);
 
-			// Et la sortie erreur dans un autre fichier
-			File.WriteAllText("ldap-container-stderr.log", stderr);
 
 
 			_ldapContainer.DisposeAsync().GetAwaiter().GetResult();
