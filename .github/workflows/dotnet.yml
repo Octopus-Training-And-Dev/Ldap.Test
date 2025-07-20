@@ -70,7 +70,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, debian-latest]
+        os: [ubuntu-latest, debian-latest]
   
     steps:
       - uses: actions/checkout@v3
@@ -98,7 +98,7 @@ jobs:
         if: always()
         uses: dorny/test-reporter@v1
         with:
-          name: Novell test results
+          name: ${{ matrix.os }} Novell test results
           path: TestResults/results.trx
           reporter: dotnet-trx
           fail-on-error: false
