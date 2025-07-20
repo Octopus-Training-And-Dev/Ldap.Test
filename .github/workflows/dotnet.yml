@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:   # Déclenchement manuel ajouté ici
 
 jobs:
   build:
@@ -13,14 +14,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
+      
       - name: Restore dependencies
         run: dotnet restore ./YourProjectFolder
+      
       - name: Build solution
-        run: dotnet build ./YourProjectFolder --no-restore
+        run: dotnet build ./YourProjectFolder --no-restore --configuration Release
 
   test:
     name: Test
@@ -29,35 +33,42 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
+      
       - name: Restore dependencies
         run: dotnet restore ./YourTestProjectFolder
+      
       - name: Build tests
-        run: dotnet build ./YourTestProjectFolder --no-restore
+        run: dotnet build ./YourTestProjectFolder --no-restore --configuration Release
+      
       - name: Run tests
-        run: dotnet test ./YourTestProjectFolder --no-build --verbosity normal
+        run: dotnet test ./YourTestProjectFolder --no-build --verbosity normal --configuration Release
 
   integration-test:
     name: Integration Test
     runs-on: ubuntu-latest
     needs: build
-      
+
     steps:
       - uses: actions/checkout@v3
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
+      
       - name: Check Docker version
         run: docker --version
-      - name: Start Docker
-        run: sudo service docker start
+      
       - name: Restore dependencies for Integration Tests
         run: dotnet restore ./IntegrationTests
+      
       - name: Build Integration Tests
-        run: dotnet build ./IntegrationTests --no-restore
+        run: dotnet build ./IntegrationTests --no-restore --configuration Release
+      
       - name: Run Integration Tests
-        run: dotnet test ./IntegrationTests --no-build --verbosity normal
+        run: dotnet test ./IntegrationTests --no-build --verbosity normal --configuration Release
