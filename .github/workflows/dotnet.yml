@@ -7,13 +7,13 @@ on:
     branches: [ "*" ]
   workflow_dispatch:
 
+env:
+  TESTCONTAINERS_HOST_OVERRIDE: "host.docker.internal"
+  TESTCONTAINERS_RYUK_DISABLED: "true"
+
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    env:
-      TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
