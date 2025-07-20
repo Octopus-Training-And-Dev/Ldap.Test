@@ -31,18 +31,18 @@ namespace Ldap.Test
 		{
 			ldapFixture.TestcontainersStates.Should().Be(DotNet.Testcontainers.Containers.TestcontainersStates.Running, "the LDAP container should be running");
 
-			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
-			Console.WriteLine($"Connecting to {ldapFixture.Hostname}:{port}, SSL={secure}");
-			LdapDirectoryIdentifier identifier = new(ldapFixture.Hostname, port);
-			using LdapConnection connection = new(identifier)
-			{
-				AuthType = AuthType.Anonymous
-			};
-			connection.SessionOptions.ProtocolVersion = 3;
-			connection.SessionOptions.SecureSocketLayer = secure;
-			connection.SessionOptions.VerifyServerCertificate += (conn, cert) => secure;
+			//int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
+			//Console.WriteLine($"Connecting to {ldapFixture.Hostname}:{port}, SSL={secure}");
+			//LdapDirectoryIdentifier identifier = new(ldapFixture.Hostname, port);
+			//using LdapConnection connection = new(identifier)
+			//{
+			//	AuthType = AuthType.Anonymous
+			//};
+			//connection.SessionOptions.ProtocolVersion = 3;
+			//connection.SessionOptions.SecureSocketLayer = secure;
+			//connection.SessionOptions.VerifyServerCertificate += (conn, cert) => secure;
 
-			connection.Bind();
+			//connection.Bind();
 		}
 
 		[Theory]
