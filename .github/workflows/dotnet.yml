@@ -24,10 +24,10 @@ jobs:
         run: docker --version
       - name: Start Docker
         run: sudo service docker start    
-      - name: Prepare certs folder
-        run: |
-          mkdir -p ./Ldap.Test/bin/Release/net8.0/certs
-          # copier les fichiers certs nécessaires, par ex:
-          cp ./certs/* ./Ldap.Test/bin/Release/net8.0/certs/ || echo "No certs to copy"        
+      - name: Create certs folder for docker mount
+        run: mkdir -p ./Ldap.Test/bin/Release/net8.0/certs
+      
+      - name: Copy certs to build folder
+        run: cp -r ./Ldap.Test/Certs/* ./Ldap.Test/bin/Release/net8.0/certs/      
       - name: Run tests
         run: dotnet test --configuration Release
