@@ -26,8 +26,7 @@ namespace Ldap.Test
 		[InlineData(false)]
 		[InlineData(true)]
 		public void Ldap_Anonymous(bool secure)
-		{
-			
+		{			
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
 			Console.WriteLine($"Connecting to {ldapFixture.Hostname}:{port}, SSL={secure}");
 			LdapDirectoryIdentifier identifier = new(ldapFixture.Hostname, port);

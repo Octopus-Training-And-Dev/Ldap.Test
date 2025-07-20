@@ -4,32 +4,42 @@ using DotNet.Testcontainers.Containers;
 
 namespace Ldap.Test
 {
-	public class LdapFixture : IAsyncLifetime
+	public class LdapFixture : IDisposable
 	{
+
 		#region Fields
 
 		private IContainer _ldapContainer;
 
 		#endregion Fields
 
+
+		#region Public Constructors
+
+		public LdapFixture() => InitializeAsync().GetAwaiter().GetResult();
+
+		#endregion Public Constructors
+
+
 		#region Properties
 
+		public string Hostname { get; private set; }
 		public ushort LdapPort { get; private set; }
 		public ushort LdapsPort { get; private set; }
-		public string Hostname { get; private set; }
 
 		#endregion Properties
 
+
 		#region Public Methods
 
-		public async Task DisposeAsync()
+		public void Dispose()
 		{
 			if (_ldapContainer == null)
 			{
 				return;
 			}
 
-			await _ldapContainer.DisposeAsync();
+			_ldapContainer.DisposeAsync().GetAwaiter().GetResult();
 		}
 
 		public async Task InitializeAsync()
@@ -70,5 +80,6 @@ namespace Ldap.Test
 		}
 
 		#endregion Public Methods
+
 	}
 }
