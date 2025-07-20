@@ -2,6 +2,7 @@ using FluentAssertions;
 
 using System.DirectoryServices.Protocols;
 using System.Net;
+using System.Net.Sockets;
 
 namespace Ldap.Test
 {
@@ -33,7 +34,15 @@ namespace Ldap.Test
 			//ldapFixture.Hostname.Should().Be("Localhost", "the LDAP container should be running on localhost");
 
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
-			LdapDirectoryIdentifier identifier = new("127.0.0.1", port);
+
+			using var tcpClient = new TcpClient();
+
+			var connectTask = tcpClient.ConnectAsync(ldapFixture.Hostname, port);
+			bool connected = connectTask.Wait(TimeSpan.FromSeconds(5)); // timeout 5s
+
+			Assert.True(connected && tcpClient.Connected, $"Cannot connect to LDAP at {ldapFixture.Hostname}:{port}");
+
+			LdapDirectoryIdentifier identifier = new(ldapFixture.Hostname, port);
 			using LdapConnection connection = new(identifier)
 			{
 				AuthType = AuthType.Anonymous
