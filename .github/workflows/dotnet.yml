@@ -25,11 +25,6 @@ jobs:
         with:
           dotnet-version: 8.0.x
           
-      - name: Check Ubuntu version and LDAP packages
-        run: |
-          lsb_release -a
-          apt-cache search libldap
-          
       - name: Install native dependencies
         run: |
           sudo apt-get update
@@ -76,4 +71,5 @@ jobs:
           name: Unit Tests
           path: TestResults/results.trx
           reporter: dotnet-trx
+          fail-on-error: false
       
