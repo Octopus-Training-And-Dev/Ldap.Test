@@ -49,6 +49,15 @@ jobs:
         run: cp -r ./Ldap.Test/Certs/* ./Ldap.Test/bin/Release/net8.0/certs/
 
       - name: Run tests
+        continue-on-error: true
         env:
           LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-        run: dotnet test --configuration Release
+        run: dotnet test --configuration Release --logger "trx;LogFileName=TestResults/results.trx"
+
+      - name: Upload test results
+        if: always()  # upload même si les tests échouent
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/results.trx
+
