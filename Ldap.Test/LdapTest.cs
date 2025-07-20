@@ -27,8 +27,9 @@ namespace Ldap.Test
 		[InlineData(true)]
 		public void Ldap_Anonymous(bool secure)
 		{
+			string host = ldapFixture.Hostname; // généralement "localhost"
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
-			LdapDirectoryIdentifier identifier = new("localhost", port);
+			LdapDirectoryIdentifier identifier = new(host, port);
 			using LdapConnection connection = new(identifier)
 			{
 				AuthType = AuthType.Anonymous

@@ -16,6 +16,7 @@ namespace Ldap.Test
 
 		public ushort LdapPort { get; private set; }
 		public ushort LdapsPort { get; private set; }
+		public string Hostname { get; private set; }
 
 		#endregion Properties
 
@@ -61,6 +62,7 @@ namespace Ldap.Test
 			// Récupérer les ports mappés
 			LdapPort = _ldapContainer.GetMappedPublicPort(1389);
 			LdapsPort = _ldapContainer.GetMappedPublicPort(1636);
+			Hostname = _ldapContainer.Hostname;
 		}
 
 		#endregion Public Methods
