@@ -19,17 +19,16 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-
+          
       - name: Install native dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libldap-common libsasl2-2 libssl3 libkrb5-3 libldap-2.6-2
 
-      - name: Fix libldap version (if needed)
+      - name: Check libldap files and symlinks
         run: |
-          if [ ! -f /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0 ] && [ -f /usr/lib/x86_64-linux-gnu/libldap-2.6.so.0 ]; then
-            sudo ln -s /usr/lib/x86_64-linux-gnu/libldap-2.6.so.0 /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0
-          fi
+          ls -l /usr/lib/x86_64-linux-gnu/libldap*
+          ldd $(which dotnet) | grep ldap
 
       - name: Check Docker version
         run: docker --version
