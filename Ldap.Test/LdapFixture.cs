@@ -9,7 +9,7 @@ namespace Ldap.Test
 
 		#region Fields
 
-		private IContainer _ldapContainer;
+		public IContainer _ldapContainer;
 
 		#endregion Fields
 
@@ -45,12 +45,20 @@ namespace Ldap.Test
 
 		#region Public Methods
 
-		public void Dispose()
+		public async void Dispose()
 		{
 			if (_ldapContainer == null)
 			{
 				return;
 			}
+
+			// Avant d’arrêter le container, récupère et affiche les logs
+			var logs = await _ldapContainer.GetLogsAsync();
+			Console.WriteLine("===== Logs du container LDAP =====");
+			Console.WriteLine(logs);
+
+			await _ldapContainer.StopAsync();
+			await _ldapContainer.DisposeAsync();
 
 			_ldapContainer.DisposeAsync().GetAwaiter().GetResult();
 		}
@@ -91,7 +99,6 @@ namespace Ldap.Test
 
 			Console.WriteLine($"Mapped ports => LDAP: {LdapPort}, LDAPS: {LdapsPort}");
 			Console.WriteLine($"Hostname => {Hostname}");
-
 
 		}
 
