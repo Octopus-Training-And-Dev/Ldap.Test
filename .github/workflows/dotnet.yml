@@ -15,7 +15,7 @@ permissions:
 jobs:
   test-ldap-DirectoryServices-protocol:
     name: Test Ldap.DirectoryServices.Test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v3
@@ -24,23 +24,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-          
-      - name: Install native dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libldap-common libldap2 libsasl2-2 libssl3 libkrb5-3
-
-      - name: Create libldap symlink if missing
-        run: |
-          if [ ! -f /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0 ] && [ -f /usr/lib/x86_64-linux-gnu/libldap.so.2 ]; then
-            sudo ln -s /usr/lib/x86_64-linux-gnu/libldap.so.2 /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0
-          fi
-          
-      - name: Check Docker version
-        run: docker --version
-      
-      - name: Start Docker
-        run: sudo service docker start
 
       - name: Create certs folder for docker mount
         run: mkdir -p ./Ldap.DirectoryServices.Test/bin/Release/net8.0/certs
