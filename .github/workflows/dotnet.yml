@@ -13,8 +13,8 @@ permissions:
   checks: write
 
 jobs:
-  test:
-    name: Test
+  test-ldap-DirectoryServices-protocol:
+    name: Test Ldap.DirectoryServices.Test
     runs-on: ubuntu-latest
 
     steps:
@@ -54,7 +54,55 @@ jobs:
           LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
         run: |
           mkdir -p TestResults
-          dotnet test --configuration Release --logger "trx;LogFileName=results.trx" --results-directory TestResults
+          dotnet test  --configuration Release --logger "trx;LogFileName=results.trx" --results-directory TestResults
+
+      - name: Publish test results to GitHub
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Unit Tests
+          path: TestResults/results.trx
+          reporter: dotnet-trx
+          fail-on-error: false      
+
+      - name: Upload test results
+        if: always()  # upload même si les tests échouent
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/results.trx
+
+  test-ldap-Novell-Tests:
+    name: Testldap-Novell-Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+          
+      - name: Check Docker version
+        run: docker --version
+      
+      - name: Start Docker
+        run: sudo service docker start
+
+      - name: Create certs folder for docker mount
+        run: mkdir -p ./Ldap.Test/bin/Release/net8.0/certs
+      
+      - name: Copy certs to build folder
+        run: cp -r ./Ldap.Test/Certs/* ./Ldap.Test/bin/Release/net8.0/certs/
+
+      - name: Run tests
+        continue-on-error: true
+        env:
+          LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+        run: |
+          mkdir -p TestResults
+          dotnet test   --configuration Release --logger "trx;LogFileName=results.trx" --results-directory TestResults
 
       - name: Publish test results to GitHub
         if: always()

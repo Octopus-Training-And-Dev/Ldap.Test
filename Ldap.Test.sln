@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36310.24
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ldap.Test", "Ldap.Test\Ldap.Test.csproj", "{5BB15D61-B1AE-4F03-B4D8-65E5A0EC828D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{9C8CB701-102D-CF49-A3E0-89AC09D42C2C}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ldap.DirectoryServices.Test", "Ldap.DirectoryServices.Test\Ldap.DirectoryServices.Test.csproj", "{B5B3A7D4-18AD-EC79-4413-C9DEBEC78734}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ldap.Novell.Tests", "ldap.Novell.Tests\ldap.Novell.Tests.csproj", "{348D26BF-98FA-4D46-A485-B5B7BD0A6F54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,13 +21,21 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5BB15D61-B1AE-4F03-B4D8-65E5A0EC828D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BB15D61-B1AE-4F03-B4D8-65E5A0EC828D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BB15D61-B1AE-4F03-B4D8-65E5A0EC828D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BB15D61-B1AE-4F03-B4D8-65E5A0EC828D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5B3A7D4-18AD-EC79-4413-C9DEBEC78734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5B3A7D4-18AD-EC79-4413-C9DEBEC78734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5B3A7D4-18AD-EC79-4413-C9DEBEC78734}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5B3A7D4-18AD-EC79-4413-C9DEBEC78734}.Release|Any CPU.Build.0 = Release|Any CPU
+		{348D26BF-98FA-4D46-A485-B5B7BD0A6F54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{348D26BF-98FA-4D46-A485-B5B7BD0A6F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{348D26BF-98FA-4D46-A485-B5B7BD0A6F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{348D26BF-98FA-4D46-A485-B5B7BD0A6F54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B5B3A7D4-18AD-EC79-4413-C9DEBEC78734} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{348D26BF-98FA-4D46-A485-B5B7BD0A6F54} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49AC6A6D-BB90-4BFC-BF5A-A6B47074CEF6}

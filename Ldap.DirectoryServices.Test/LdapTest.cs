@@ -1,10 +1,12 @@
 using FluentAssertions;
 
+using Ldap.Test;
+
 using System.DirectoryServices.Protocols;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Ldap.Test
+namespace Ldap.DirectoryServices.Test
 {
 	public class LdapTest : IClassFixture<LdapFixture>
 	{

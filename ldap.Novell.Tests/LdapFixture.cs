@@ -2,24 +2,21 @@ using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 
-namespace Ldap.Test
+namespace ldap.Novell.Tests
 {
 	public class LdapFixture : IDisposable
 	{
-
 		#region Fields
 
 		public IContainer _ldapContainer;
 
 		#endregion Fields
 
-
 		#region Public Constructors
 
 		public LdapFixture() => InitializeAsync().GetAwaiter().GetResult();
 
 		#endregion Public Constructors
-
 
 		#region Properties
 
@@ -42,7 +39,6 @@ namespace Ldap.Test
 
 		#endregion Properties
 
-
 		#region Public Methods
 
 		public async void Dispose()
@@ -60,7 +56,7 @@ namespace Ldap.Test
 			string certsPathWindows = Path.GetFullPath("./certs"); // chemin absolu Windows
 			string certsPathUnix = certsPathWindows.Replace("\\", "/"); // chemin en slash UNIX
 
-							_ldapContainer = new ContainerBuilder()
+			_ldapContainer = new ContainerBuilder()
 					.WithImage("bitnami/openldap:latest")
 					.WithPortBinding(1389, true)
 					.WithPortBinding(1636, true)
@@ -89,10 +85,8 @@ namespace Ldap.Test
 
 			Console.WriteLine($"Mapped ports => LDAP: {LdapPort}, LDAPS: {LdapsPort}");
 			Console.WriteLine($"Hostname => {Hostname}");
-
 		}
 
 		#endregion Public Methods
-
 	}
 }
