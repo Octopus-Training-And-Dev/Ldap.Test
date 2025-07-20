@@ -27,9 +27,10 @@ namespace Ldap.Test
 		[InlineData(true)]
 		public void Ldap_Anonymous(bool secure)
 		{
-			string host = ldapFixture.Hostname; // généralement "localhost"
+			
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
-			LdapDirectoryIdentifier identifier = new(host, port);
+			Console.WriteLine($"Connecting to {ldapFixture.Hostname}:{port}, SSL={secure}");
+			LdapDirectoryIdentifier identifier = new(ldapFixture.Hostname, port);
 			using LdapConnection connection = new(identifier)
 			{
 				AuthType = AuthType.Anonymous
@@ -51,10 +52,11 @@ namespace Ldap.Test
 		public void Ldap_SearchForUsers_ShouldReturnSmaussion(bool secure, string username, string password)
 		{
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
-			LdapDirectoryIdentifier identifier = new("localhost", port);
+			Console.WriteLine($"Connecting to {ldapFixture.Hostname}:{port}, SSL={secure}");
+			LdapDirectoryIdentifier identifier = new(ldapFixture.Hostname, port);
 			string login = $"cn={username},ou=users,dc=example,dc=org";
 
-			using var connection = new LdapConnection(identifier)
+			using LdapConnection connection = new LdapConnection(identifier)
 			{
 				AuthType = AuthType.Basic,
 				Credential = new NetworkCredential(login, password)

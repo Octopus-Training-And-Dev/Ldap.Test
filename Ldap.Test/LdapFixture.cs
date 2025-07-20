@@ -63,6 +63,10 @@ namespace Ldap.Test
 			LdapPort = _ldapContainer.GetMappedPublicPort(1389);
 			LdapsPort = _ldapContainer.GetMappedPublicPort(1636);
 			Hostname = _ldapContainer.Hostname;
+
+			Console.WriteLine($"Mapped ports => LDAP: {LdapPort}, LDAPS: {LdapsPort}");
+			Console.WriteLine($"Hostname => {Hostname}");
+
 		}
 
 		#endregion Public Methods
