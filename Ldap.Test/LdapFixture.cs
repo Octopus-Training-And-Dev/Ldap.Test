@@ -52,16 +52,6 @@ namespace Ldap.Test
 				return;
 			}
 
-			// Récupérer les logs du container de façon synchrone
-			(string Stdout, string Stderr) logs = await _ldapContainer.GetLogsAsync();
-			string stdout = logs.Stdout;
-			string stderr = logs.Stderr;
-
-			var logs = await _ldapContainer.GetLogsAsync();
-			await File.WriteAllTextAsync("ldap-container.log", logs.Stdout + "\n" + logs.Stderr);
-
-
-
 			_ldapContainer.DisposeAsync().GetAwaiter().GetResult();
 		}
 
