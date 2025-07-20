@@ -47,9 +47,10 @@ namespace Ldap.Test
 			{
 				AuthType = AuthType.Anonymous
 			};
+
 			connection.SessionOptions.ProtocolVersion = 3;
 			connection.SessionOptions.SecureSocketLayer = secure;
-			connection.SessionOptions.VerifyServerCertificate += (conn, cert) => secure;
+			connection.SessionOptions.VerifyServerCertificate += (conn, cert) => true;
 
 			connection.Bind();
 		}
