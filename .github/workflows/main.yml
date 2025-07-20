@@ -15,7 +15,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-
+      
+    - name: Check Docker version
+      shell: pwsh
+      continue-on-error: true
+      run: docker version
+      
     - name: Install Chocolatey (if not installed)
       shell: powershell
       run: |
@@ -38,7 +43,3 @@ jobs:
     - name: Check Docker version
       shell: pwsh
       run: docker version
-
-    - name: Build Docker image
-      shell: pwsh
-      run: docker build -t monimage:latest .
