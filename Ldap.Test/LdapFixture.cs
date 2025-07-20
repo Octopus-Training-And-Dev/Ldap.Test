@@ -92,7 +92,6 @@ namespace Ldap.Test
 			Console.WriteLine($"Mapped ports => LDAP: {LdapPort}, LDAPS: {LdapsPort}");
 			Console.WriteLine($"Hostname => {Hostname}");
 
-			_ldapContainer.State
 
 		}
 
