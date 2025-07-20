@@ -30,6 +30,7 @@ namespace Ldap.Test
 		public void Ldap_Anonymous(bool secure)
 		{
 			ldapFixture.TestcontainersStates.Should().Be(DotNet.Testcontainers.Containers.TestcontainersStates.Running, "the LDAP container should be running");
+			ldapFixture.Hostname.Should().Be("Localhost", "the LDAP container should be running on localhost");
 
 			//int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
 			//Console.WriteLine($"Connecting to {ldapFixture.Hostname}:{port}, SSL={secure}");
