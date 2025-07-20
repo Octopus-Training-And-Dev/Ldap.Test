@@ -1,4 +1,4 @@
-name: .NET with Testcontainers
+name: .NET + Testcontainers
 
 on:
   push:
@@ -11,6 +11,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -20,16 +23,16 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Verify Docker is available
+    - name: Check Docker access
       run: docker info
 
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build project
+    - name: Build
       run: dotnet build --no-restore
 
-    - name: Run tests using Testcontainers
+    - name: Run tests with Testcontainers
       run: |
         mkdir -p TestResults
         dotnet test --no-build --verbosity normal \
