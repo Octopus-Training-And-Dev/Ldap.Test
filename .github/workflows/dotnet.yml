@@ -23,8 +23,15 @@ jobs:
       - name: Install native LDAP libraries
         run: |
           sudo apt-get update
-          sudo apt-get install -y libldap-2.5-0 libsasl2-2 libssl3 libkrb5-3 || \
-          sudo apt-get install -y libldap-common libsasl2-2 libssl3 libkrb5-3
+          sudo apt-get install -y libldap-2.5-0 || sudo apt-get install -y libldap-2.4-2
+          sudo apt-get install -y libsasl2-2 libssl3 libkrb5-3 libldap-common
+          ldconfig -p | grep ldap
+          ls -l /usr/lib/x86_64-linux-gnu/libldap*
+      - name: Symlink libldap if version mismatch
+        run: |
+          if [ ! -f /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0 ] && [ -f /usr/lib/x86_64-linux-gnu/libldap-2.4.so.2 ]; then
+            sudo ln -s /usr/lib/x86_64-linux-gnu/libldap-2.4.so.2 /usr/lib/x86_64-linux-gnu/libldap-2.5.so.0
+          fi
 
 
       - name: Check Docker version
