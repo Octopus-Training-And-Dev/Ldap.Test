@@ -13,7 +13,7 @@ permissions:
 jobs:
   test-ldap-DirectoryServices-protocol:
     name: Test Ldap.DirectoryServices.Test
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
