@@ -5,6 +5,7 @@ VisualStudioVersion = 17.14.36310.24
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{9C8CB701-102D-CF49-A3E0-89AC09D42C2C}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\Git\Dockers\Ldap\docker-compose.yml = ..\..\Git\Dockers\Ldap\docker-compose.yml
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		README.md = README.md
 	EndProjectSection

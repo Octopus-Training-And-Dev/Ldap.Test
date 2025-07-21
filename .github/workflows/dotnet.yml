@@ -23,16 +23,13 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Create certs folder for docker mount
-        run: mkdir -p ./Ldap.DirectoryServices.Test/bin/Release/net8.0/certs
-      
-      - name: Copy certs to build folder
-        run: cp -r ./Ldap.DirectoryServices.Test/Certs/* ./Ldap.DirectoryServices.Test/bin/Release/net8.0/certs/
+      - name: Build my-openldap-with-tls Docker image
+        run: |
+          docker build -t my-openldap-with-tls /Ldap.DirectoryServices.Test/Dockerfile
+
 
       - name: Run tests
         continue-on-error: true
-        env:
-          LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
         run: |
           mkdir -p TestResults
           dotnet test ./Ldap.DirectoryServices.Test/Ldap.DirectoryServices.Test.csproj  --configuration Release --logger "trx;LogFileName=results.trx" --results-directory TestResults

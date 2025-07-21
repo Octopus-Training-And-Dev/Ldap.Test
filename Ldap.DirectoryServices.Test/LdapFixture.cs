@@ -53,11 +53,11 @@ namespace Ldap.DirectoryServices.Test
 
 		public async Task InitializeAsync()
 		{
-			string certsPathWindows = Path.GetFullPath("./certs"); // chemin absolu Windows
+			string certsPathWindows = Path.GetFullPath("./Certs"); // chemin absolu Windows
 			string certsPathUnix = certsPathWindows.Replace("\\", "/"); // chemin en slash UNIX
 
 			_ldapContainer = new ContainerBuilder()
-							.WithImage("bitnami/openldap:latest")
+							.WithImage("my-openldap-with-tls")
 							.WithPortBinding(1389, true)
 							.WithPortBinding(1636, true)
 							.WithEnvironment("LDAP_ADMIN_USERNAME", "admin")
@@ -65,14 +65,11 @@ namespace Ldap.DirectoryServices.Test
 							.WithEnvironment("LDAP_USERS", "smaussion,user01,user02")
 							.WithEnvironment("LDAP_PASSWORDS", "P@ssw0rd,password1,password2")
 							.WithEnvironment("LDAP_ENABLE_TLS", "yes")
-							.WithEnvironment("LDAP_TLS_CERT_FILE", "/opt/bitnami/openldap/certs/openldap.crt")
-							.WithEnvironment("LDAP_TLS_KEY_FILE", "/opt/bitnami/openldap/certs/openldap.key")
-							.WithEnvironment("LDAP_TLS_CA_FILE", "/opt/bitnami/openldap/certs/openldapCA.crt")
 							.WithEnvironment("LDAP_TLS_VERIFY_CLIENT", "never")
-							.WithBindMount(certsPathWindows, "/opt/bitnami/openldap/certs", accessMode: AccessMode.ReadOnly)
 							.WithWaitStrategy(Wait.ForUnixContainer()
 								.UntilMessageIsLogged("slapd starting")
-								.UntilPortIsAvailable(1389))
+								.UntilPortIsAvailable(1389)
+								.UntilPortIsAvailable(1636))
 							.WithCleanUp(true)
 							.Build();
 

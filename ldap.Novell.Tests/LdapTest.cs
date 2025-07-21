@@ -53,7 +53,7 @@ namespace ldap.Novell.Tests
 		[InlineData(false, "smaussion", "P@ssw0rd")]
 		[InlineData(false, "user01", "password1")]
 		[InlineData(false, "user02", "password2")]
-		//[InlineData(true, "smaussion", "P@ssw0rd")]
+		[InlineData(true, "smaussion", "P@ssw0rd")]
 		//[InlineData(true, "user01", "password1")]
 		//[InlineData(true, "user02", "password2")]
 		public void Ldap_SearchForUsers_ShouldReturnSmaussion(bool secure, string username, string password)
@@ -61,17 +61,14 @@ namespace ldap.Novell.Tests
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
 			string loginDn = $"cn={username},ou=users,dc=example,dc=org";
 
-			using LdapConnection connection = new();
-			connection.SecureSocketLayer = secure;
-			connection.Connect(ldapFixture.Hostname, port);
-			connection.Bind(loginDn, password);
-			System.Net.ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, errors) => true;
-
-
+			using LdapConnection ldapConnection = new();
+			ldapConnection.SecureSocketLayer = secure;
+			ldapConnection.Connect(ldapFixture.Hostname, port);
+			ldapConnection.Bind(loginDn, password);
 
 			// Si bind OK, test passe. Sinon exception levée.
-			_ = connection.Bound.Should().BeTrue();
-			connection.Disconnect();
+			_ = ldapConnection.Bound.Should().BeTrue();
+			ldapConnection.Disconnect();
 		}
 	}
 }

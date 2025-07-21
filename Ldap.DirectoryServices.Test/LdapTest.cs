@@ -30,12 +30,12 @@ namespace Ldap.DirectoryServices.Test
 		{
 			int port = ldapFixture.LdapsPort;
 
-			using var tcpClient = new TcpClient();
+			using TcpClient tcpClient = new();
 
-			var connectTask = tcpClient.ConnectAsync(ldapFixture.Hostname, port);
+			Task connectTask = tcpClient.ConnectAsync(ldapFixture.Hostname, port);
 			bool connected = connectTask.Wait(TimeSpan.FromSeconds(5)); // timeout 5s
 
-			(tcpClient.Connected && connected).Should().BeTrue($"Cannot connect to LDAP at {ldapFixture.Hostname}:{port}");
+			_ = (tcpClient.Connected && connected).Should().BeTrue($"Cannot connect to LDAP at {ldapFixture.Hostname}:{port}");
 		}
 
 		[Theory]
@@ -48,9 +48,9 @@ namespace Ldap.DirectoryServices.Test
 
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
 
-			using var tcpClient = new TcpClient();
+			using TcpClient tcpClient = new();
 
-			var connectTask = tcpClient.ConnectAsync(ldapFixture.Hostname, port);
+			Task connectTask = tcpClient.ConnectAsync(ldapFixture.Hostname, port);
 			bool connected = connectTask.Wait(TimeSpan.FromSeconds(5)); // timeout 5s
 
 			Assert.True(connected && tcpClient.Connected, $"Cannot connect to LDAP at {ldapFixture.Hostname}:{port}");
@@ -81,7 +81,7 @@ namespace Ldap.DirectoryServices.Test
 			LdapDirectoryIdentifier identifier = new(ldapFixture.Hostname, port);
 			string login = $"cn={username},ou=users,dc=example,dc=org";
 
-			using LdapConnection connection = new LdapConnection(identifier)
+			using LdapConnection connection = new(identifier)
 			{
 				AuthType = AuthType.Basic,
 				Credential = new NetworkCredential(login, password)
