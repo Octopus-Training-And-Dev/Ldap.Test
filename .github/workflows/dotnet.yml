@@ -25,7 +25,7 @@ jobs:
 
       - name: Build my-openldap-with-tls Docker image
         run: |
-          docker build -t my-openldap-with-tls /Ldap.DirectoryServices.Test/
+          docker build -t my-openldap-with-tls .
 
 
       - name: Run tests
