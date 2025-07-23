@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ldap.Novell.Tests", "ldap.Novell.Tests\ldap.Novell.Tests.csproj", "{348D26BF-98FA-4D46-A485-B5B7BD0A6F54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LdapForTest.Tests", "LdapForTest.Tests\LdapForTest.Tests.csproj", "{AC88A2AF-72FB-4B19-96F7-C630CB74CE80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{348D26BF-98FA-4D46-A485-B5B7BD0A6F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{348D26BF-98FA-4D46-A485-B5B7BD0A6F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{348D26BF-98FA-4D46-A485-B5B7BD0A6F54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC88A2AF-72FB-4B19-96F7-C630CB74CE80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC88A2AF-72FB-4B19-96F7-C630CB74CE80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC88A2AF-72FB-4B19-96F7-C630CB74CE80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC88A2AF-72FB-4B19-96F7-C630CB74CE80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B5B3A7D4-18AD-EC79-4413-C9DEBEC78734} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{348D26BF-98FA-4D46-A485-B5B7BD0A6F54} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{AC88A2AF-72FB-4B19-96F7-C630CB74CE80} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49AC6A6D-BB90-4BFC-BF5A-A6B47074CEF6}

@@ -43,9 +43,6 @@ namespace Ldap.DirectoryServices.Test
 		[InlineData(true)]
 		public void Ldap_Anonymous(bool secure)
 		{
-			//ldapFixture.TestcontainersStates.Should().Be(DotNet.Testcontainers.Containers.TestcontainersStates.Running, "the LDAP container should be running");
-			//ldapFixture.Hostname.Should().Be("Localhost", "the LDAP container should be running on localhost");
-
 			int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
 
 			using TcpClient tcpClient = new();
@@ -93,6 +90,34 @@ namespace Ldap.DirectoryServices.Test
 
 			connection.Bind();
 		}
+
+		//[Theory]
+		//[InlineData(false, "smaussion", "P@ssw0rd")]
+		//[InlineData(false, "user01", "password1")]
+		//[InlineData(false, "user02", "password2")]
+		//[InlineData(true, "smaussion", "P@ssw0rd")]
+		//[InlineData(true, "user01", "password1")]
+		//[InlineData(true, "user02", "password2")]
+		//public void LdapForNet_SearchForUsers_ShouldReturnSmaussion(bool secure, string username, string password)
+		//{
+		//	int port = secure ? ldapFixture.LdapsPort : ldapFixture.LdapPort;
+		//	string login = $"cn={username},ou=users,dc=example,dc=org";
+		//	using LdapForNet.LdapConnection cn = new LdapForNet.LdapConnection();
+		//	{
+		//		// Connexion LDAPS
+		//		cn.Connect(ldapFixture.Hostname);
+
+		//		cn.TrustAllCertificates();
+		//		LdapForNet.LdapCredential ldapCredential = new()
+		//		{
+		//			UserName = login,
+		//			Password = password
+		//		};
+
+		//		cn.Bind(LdapAuthType.Simple, ldapCredential);
+		//	}
+		//}
+
 
 		#endregion Public Methods
 	}

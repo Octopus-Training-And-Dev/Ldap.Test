@@ -15,6 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="8.5.0" />
+    <PackageReference Include="LdapForNet" Version="2.7.15" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="System.DirectoryServices.Protocols" Version="9.0.7" />
     <PackageReference Include="Testcontainers" Version="4.0.0" />
